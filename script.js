@@ -1,29 +1,91 @@
-const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-recognition.lang = 'pt-BR';
-recognition.continuous = true;
+const q = document.getElementById('q');
+document.getElementById('submitListen').addEventListener('click', startRecognition);
 
-document.getElementById('submit').addEventListener('click', startRecognition);
+var stranscript = '';
 
 function startRecognition() {
+    const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+    recognition.lang = 'pt-BR';
+    recognition.continuous = true;
 
     recognition.start();
 
-    var stranscript = '';
-
     recognition.onresult = (event) => {
         stranscript += event.results[event.results.length - 1][0].transcript;
-        document.getElementById('q').value = stranscript.trim();
+
+        q.value = stranscript.trim();
 
         var interval = setInterval(() => {
-            stranscript = '';
-            document.getElementById('q').value = stranscript.trim();
             recognition.stop();
+
+            chatGpt(stranscript.trim());
+
             clearInterval(interval);
-        }, 10000);
+        }, 5000);
 
     }
+}
 
-    recognition.onend = () => {
-        console.log('Speech recognition service disconnected');
-    }
+function chatGpt(message) {
+    const apiKey = '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';
+
+    var oHttp = new XMLHttpRequest();
+    oHttp.open('POST', 'https://api.openai.com/v1/completions');
+    oHttp.setRequestHeader('Accept', 'application/json');
+    oHttp.setRequestHeader('Content-Type', 'application/json');
+    oHttp.setRequestHeader('Authorization', 'Bearer ' + apiKey)
+
+    var data = {
+        model: 'text-davinci-003',
+        prompt: message,
+        max_tokens: 2048,
+        user: '1',
+        temperature: 0.5,
+        frequency_penalty: 0.0,
+        presence_penalty: 0.0,
+        stop: ['#', ';']
+    };
+
+    oHttp.send(JSON.stringify(data));
+
+    oHttp.onreadystatechange = function () {
+        if (oHttp.readyState === 4) {
+            var oJson = {}
+
+            try {
+                oJson = JSON.parse(oHttp.responseText);
+            } catch (ex) {
+                console.log('Error: ' + ex.message)
+            }
+
+            if (oJson.error && oJson.error.message) {
+                console.log('Error: ' + oJson.error.message);
+            } else if (oJson.choices && oJson.choices[0].text) {
+                var s = oJson.choices[0].text;
+
+                if (s == '') s = 'No response';
+
+                stranscript += s + '\n\n';
+
+                q.value = stranscript;
+                startSpeak(s);
+            }
+        }
+    };
+}
+
+function startSpeak(textSpeak) {
+
+    const voices = window.speechSynthesis?.getVoices();
+
+    const brVoice = voices?.find((voice) => /pt-BR/.test(voice.lang));
+
+    const utterance = new SpeechSynthesisUtterance();
+
+    utterance.text = textSpeak;
+    utterance.lang = 'pt-BR';
+    utterance.voice = brVoice;
+    utterance.rate = 1;
+
+    window.speechSynthesis.speak(utterance);
 }
