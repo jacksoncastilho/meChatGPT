@@ -1,0 +1,32 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.container {
+    display: grid;
+    grid-template-areas: 'header' 'main' 'footer';
+}
+
+.title {
+    grid-area: header;
+}
+
+.chat {
+    width: 600px; 
+    height: 650px;
+    grid-area: main;
+}
+
+.container-inputs {
+    grid-area: footer;
+}
+
+.microfone {
+
+}
+

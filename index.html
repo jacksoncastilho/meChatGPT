@@ -4,11 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 <body>
-    <textarea id="q" name="q" style="width: 400px; height: 500px;;"></textarea>
-    <input id="submitListen" type="button" value="Click to Listen">
+    <div class="container">
+        <h1 class="title">TalkChatGPT</h1>
+        <textarea id="q" name="q" class="chat"readonly disabled></textarea>
+        <div class="container-inputs">
+            <input id="" class="input-text" type="text">
+            <input id="submitListen" class="microfone" type="button" value="Microfone">
+            <input id="submitText" class="submit" type="button" value="Enviar">
+        </div>
+    </div>
 </body>
 <script src="script.js"></script>
 </html>
