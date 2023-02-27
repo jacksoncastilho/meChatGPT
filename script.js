@@ -11,7 +11,7 @@ function startRecognition() {
     recognition.start();
 
     recognition.onresult = (event) => {
-        stranscript += event.results[event.results.length - 1][0].transcript;
+        stranscript += `Eu: ${event.results[event.results.length - 1][0].transcript} \n\n`;
 
         q.value = stranscript.trim();
 
@@ -39,11 +39,7 @@ function chatGpt(message) {
         model: 'text-davinci-003',
         prompt: message,
         max_tokens: 2048,
-        user: '1',
-        temperature: 0.5,
-        frequency_penalty: 0.0,
-        presence_penalty: 0.0,
-        stop: ['#', ';']
+        temperature: 0
     };
 
     oHttp.send(JSON.stringify(data));
@@ -65,10 +61,15 @@ function chatGpt(message) {
 
                 if (s == '') s = 'No response';
 
-                stranscript += s + '\n\n';
+                var a = s.replace('?', '');
+                var b = a.replace('\n\n', '');
+                var c = b.replace('R', 'Resposta');
+
+                stranscript += `${c}\n\n`;
 
                 q.value = stranscript;
-                startSpeak(s);
+
+                startSpeak(c);
             }
         }
     };
