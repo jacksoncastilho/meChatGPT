@@ -5,16 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <title>Document</title>
 </head>
 <body>
     <div class="container">
-        <h1 class="title">TalkChatGPT</h1>
+        <div class="container-title">
+            <img src="ondas-sonoras.png" alt="">
+            <h1 class="title">MeChatGPT</h1>
+        </div>
         <textarea id="q" name="q" class="chat"readonly disabled></textarea>
         <div class="container-inputs">
-            <input id="" class="input-text" type="text">
-            <input id="submitListen" class="microfone" type="button" value="Microfone">
-            <input id="submitText" class="submit" type="button" value="Enviar">
+            <input id="question" class="input-text" type="text" placeholder="Escreva sua pergunta...">
+            <div class="fi-container">
+                <i id="submitListen" class="fi fi-rr-microphone"></i>
+            </div>
+            <div class="fi-container">
+                <i id="submitText" class="fi fi-rr-paper-plane"></i>
+            </div>
         </div>
     </div>
 </body>

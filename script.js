@@ -1,5 +1,6 @@
 const q = document.getElementById('q');
 document.getElementById('submitListen').addEventListener('click', startRecognition);
+document.getElementById('submitText').addEventListener('click', sendQuestinText);
 
 var stranscript = '';
 
@@ -11,18 +12,32 @@ function startRecognition() {
     recognition.start();
 
     recognition.onresult = (event) => {
-        stranscript += `Eu: ${event.results[event.results.length - 1][0].transcript} \n\n`;
+        var sRetorno = event.results[event.results.length - 1][0].transcript;
+        stranscript += `Eu: ${sRetorno} \n\n`;
 
         q.value = stranscript.trim();
 
         var interval = setInterval(() => {
             recognition.stop();
 
-            chatGpt(stranscript.trim());
+            chatGpt(sRetorno);
 
             clearInterval(interval);
         }, 5000);
 
+    }
+}
+
+function sendQuestinText() {
+    var question = document.getElementById('question');
+    if (question.value.trim() != "") {
+        stranscript += `Eu: ${question.value} \n\n`;
+
+        q.value = stranscript;
+
+        chatGpt(question.value);
+
+        question.value = '';
     }
 }
 
