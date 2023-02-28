@@ -42,7 +42,8 @@ function sendQuestinText() {
 }
 
 function chatGpt(message) {
-    const apiKey = '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';
+    //Chave da API
+    const apiKey = '';
 
     var oHttp = new XMLHttpRequest();
     oHttp.open('POST', 'https://api.openai.com/v1/completions');
